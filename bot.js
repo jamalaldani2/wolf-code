@@ -109,7 +109,7 @@ ${thisMessage}\`\`\`
                 setTimeout(() => { 
                   b.edit(`**تم التقديم وسيتم الرد فـ اقرب وقت**`)
                 },2000);
-                var gg = message.guild.channels.find('name', '【تقديم】')
+                var gg = message.guild.channels.find('name', '【تقديمات】')
                 if(!gg) return;
                 if(gg) {
                   gg.send({
