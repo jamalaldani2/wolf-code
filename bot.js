@@ -2,33 +2,181 @@
 const client = new Discord.Client();
 var prefix = "1";
 
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);  
+const code = 'WC';//prefix
+
+client.on('message',async message => {
+    if(message.content.startsWith(code + "js")) {
+  if(!message.channel.guild) return message.reply('This Command For Servers Only !');
+          if(message.channel.name !== 'sharejs') return message.reply('يجب كتابه الامر في روم باسم sharejs')
+    let jscodes = message.guild.channels.find(`name`, "codes-js");
+    if(!jscodes) return message.channel.send(":x:لم اجد الروم الخاص بنشر الاكواد");
+      let filter = m => m.author.id === message.author.id;
+      let thisMessage;
+      let thisFalse;
+      message.channel.send(':pencil: **| من فضلك اكتب الكود الأن... :pencil2: **').then(msg => {
+  
+      message.channel.awaitMessages(filter, {
+        max: 1,
+        time: 90000,
+        errors: ['time']
+      })
+      .then(collected => {
+        collected.first().delete();
+        thisMessage = collected.first().content;
+        let boi;
+        msg.edit(':scroll: **| من فضلك اكتب وصف الكود الأن... :pencil2: **').then(msg => {
+  
+            message.channel.awaitMessages(filter, {
+              max: 1,
+              time: 90000,
+              errors: ['time']
+            })
+            .then(collected => {
+              collected.first().delete();
+              boi = collected.first().content;
+              let boi2;
+              msg.edit(':man_in_tuxedo: **| من فضلك اكتب من صنع هذا الكود الأن... :pencil2: **').then(msg => {
+  
+                message.channel.awaitMessages(filter, {
+                  max: 1,
+                  time: 90000,
+                  errors: ['time']
+                })
+                .then(collected => {
+                  collected.first().delete();
+                boi2 = collected.first().content;
+        msg.edit(':shield: **| [ هل انت متأكد من نشر الكود؟ | [ نعم ] او [ لا**');
+   message.channel.awaitMessages(response => response.content === 'نعم' || 'لا' && filter,{
+          max: 1,
+          time: 90000,
+          errors: ['time']
+        })
+        .then(collected => {
+          if(collected.first().content === 'لا') {
+            msg.delete();
+            message.delete();
+            thisFalse = false;
+          }
+          if(collected.first().content === 'نعم') {
+            if(thisFalse === false) return;
+            msg.edit(':dove: **| Done :white_check_mark:, تم بنجاح نشر كودك في روم الاكواد**');
+            collected.first().delete();
+            jscodes.send(`@everyone | @here
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+**${message.guild.name}© :arrow_down:**            
+\`\`\`js
+${thisMessage}\`\`\`
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+**وصف الكود**: ${boi}
+**تم النشر بواسطة**: ${message.author}
+**المصدر / الشخص الذي صنع الكود**: ${boi2}`); 
+          }
+        }
+    );
 });
-
-client.on('ready', async() => {
-var server = "515202282824925184"; // ايدي السررفر
-var channel = "515206756201136130";//ايدي الروم
-    setInterval(()=>{
-    client.guilds.get(server).channels.get(channel).send('**Dream , Dream , Dream , Dream , Dream , Dream , Dream , Dream , Dream , Dream , Dream , Dream , Dream , Dream , Dream , Dream , Dream , Dream , **')
-    },305);
-})
-
-client.on('message', message => {
-  if (message.author.bot) return;
-  if (!message.content.startsWith(prefix)) return;
-
-  let command = message.content.split(" ")[0];
-  command = command.slice(prefix.length);
-
-  let args = message.content.split(" ").slice(1);
-
-  if (command == "say") {
-if(!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send('?|**\`ADMINISTRATOR\`ليس لديك صلاحيات`**');
-   message.channel.sendMessage(args.join("  "))
-   message.delete()
+      });
+    }
+      );
+    });
+}
+);
+      })}});
+ client.on('message', async (message) => {
+  if(message.content.startsWith("WCتقديم")) {
+    await message.channel.send("** ما لغتك؟**").then(e => {
+    let filter = m => m.author.id === message.author.id
+    let lan = '';
+    let md = '';
+    let br = '';
+    let chaLan = message.channel.awaitMessages(filter, { max: 1, time: 400000, errors: ['time'] })
+      .then(collected => {
+        lan = collected.first().content
+        collected.first().delete()
+        e.delete();
+        message.channel.send('** ما خبرتك؟**').then(m => {
+        let chaMd = message.channel.awaitMessages(filter, { max: 1, time: 400000, errors: ['time'] })
+          .then(co => {
+            md = co.first().content
+            co.first().delete()
+            m.delete();
+            message.channel.send('**وش الفرق بين const و var**').then(ms => {
+            let br = message.channel.awaitMessages(filter, { max: 1, time: 400000, errors: ['time'] })
+              .then(col => {
+                br = col.first().content
+                col.first().delete()
+                ms.delete()
+                message.channel.send('جاري التقديم ..').then(b => {
+                setTimeout(() => { 
+                  b.edit(`**تم التقديم وسيتم الرد فـ اقرب وقت**`)
+                },2000);
+                var gg = message.guild.channels.find('name', 'تقديمات-‹‹')
+                if(!gg) return;
+                if(gg) {
+                  gg.send({
+                      embed : new Discord.RichEmbed()
+                      .setDescription(`** اللغة ❓ : \n ${lan}\nالخبرة 🔗 :\n ${md} \nالفرق بين const,var ❓ :\n ${br} \nتم التقديم بواسطة : <@${message.author.id}> **`)
+                      .setFooter(`Superme™`)
+                      .setTimestamp()
+                    });
+                  } 
+                })
+              })
+            })
+          })
+        })
+      })
+    })
   }
- });
-
+})
+   client.on('message',async message => {
+  let mention = message.mentions.members.first();
+  let role = message.content.split(" ").slice(2).join(" ");
+  let mySupport = message.guild.roles.find('name',role);
+  if(message.content.startsWith("WCقبول")) {
+    let acRoom = message.guild.channels.find('name', 'القبول-الرفض');
+    if(!acRoom) return message.reply("!!setac من فضلك انشاء روم **القبول-ال��فض** او اكتب الامر");
+    if(acRoom) {
+    if(!message.guild.member(message.author).hasPermission("MANAGE_ROLES")) return;
+    if(!mention) return message.reply('منشن شخص');
+    if(!role) return message.reply('ادخل اسم رتبة');
+    if(!mySupport) return message.reply('هذه الرتبة غير موجودة');
+    if(mention.roles.has(mySupport)) return message.reply('هذا الشخص معه الرتبة مسبقا');
  
+    mention.addRole(mySupport).then(() => {
+      acRoom.send(`**[ ${mySupport} ] واعطائك رتبة ${mention} تم بنجاح قبولك**`);
+    });
+  }
+}
+});
+client.on('message',async message => {
+  let mention = message.mentions.members.first();
+  if(message.content.startsWith("WCرفض")) {
+  if(!message.channel.guild) return;
+  let acRoom = message.guild.channels.find('name', 'القبول-الرفض');
+  if(!acRoom) return message.reply("!!setac من فضلك انشاء روم **القبول-الرفض** او اكتب الامر");
+  if(!message.guild.member(message.author).hasPermission("MANAGE_ROLES")) return;
+  if(!mention) return message.reply("منشن شخص");
+ 
+  acRoom.send(`**${mention} تم رفضك للاسف**`)
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 client.login(process.env.BOT_TOKEN);
